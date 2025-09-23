@@ -11,6 +11,6 @@ export class AppComponent {
   @ViewChild('registrationForm') form: NgForm;
 
   onFormSubmit(){
-    console.log(this.form);
+    console.log(this.form.value);
   }
 }
