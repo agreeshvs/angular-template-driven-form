@@ -1,4 +1,4 @@
-<section class="container">
+<section class="container" [ngClass]="{'form-shadow' : registrationForm.touched}">
   <header>Registration Form</header>
 
   <form class="form" (ngSubmit)="onFormSubmit()" #registrationForm="ngForm">
@@ -6,7 +6,7 @@
       <div class="input-box">
         <input type="text" placeholder="First Name" name="firstName" ngModel/>
       </div> 
-
+  
       <div class="input-box">
         <input type="text" placeholder="Last Name" name="lastName" ngModel/>
       </div>
@@ -35,7 +35,11 @@
     <div class="gender-box">
       <h3>Gender</h3>
       <div class="gender-option">
-        <div class="gender">
+        <div *ngFor="let gender of genders" class="gender">
+          <input type="radio" [value]="gender.value" [id]="gender.id" name="gender" checked ngModel/>
+          <label [for]="gender.id">{{gender.display}}</label>
+        </div>
+        <!-- <div class="gender">
           <input type="radio" value="male" id="check-male" name="gender" checked ngModel/>
           <label for="check-male">male</label>
         </div>
@@ -46,7 +50,7 @@
         <div class="gender">
           <input type="radio" value="nototsay" id="check-other" name="gender" ngModel/>
           <label for="check-other">prefer not to say</label>
-        </div>
+        </div> -->
       </div>
     </div>
 
