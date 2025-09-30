@@ -29,6 +29,7 @@ export class AppComponent {
   username: any;
   street1: any;
   street2: any;
+  isAgreed: boolean = false;
 
 
   onFormSubmit(){
@@ -49,7 +50,7 @@ export class AppComponent {
     this.street2 = this.form.value.address.street2;
     console.log(this.country);
     setTimeout(() => {
-      this.resetForm();
+      // this.resetForm();
     }, 2000);
   }
 

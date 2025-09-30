@@ -89,7 +89,11 @@
         <input type="number" placeholder="Postal code" name="postalCode" ngModel required/>
       </div>
     </div>
-    <small *ngIf="!addr.valid&&addr.touched">*Madatory fields are there</small>
+    <div class="column">
+      <input type="checkbox" name="agreement" [ngModel]="isAgreed">
+      <label for="agreement"> I agree to terms & conditions</label><br>
+    </div>
+    <small *ngIf="!addr.valid&&addr.touched">*Some of the address fields does not contain a valid value</small>
     <input type="submit" value="Submit" class="submit-btn">
     <button type="button" (click)="resetForm()" class="submit-btn">Reset Form</button>
   </form>
