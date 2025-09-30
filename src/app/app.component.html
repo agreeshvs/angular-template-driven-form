@@ -18,7 +18,7 @@
     </div>    
 
     <div class="input-box">
-      <input type="text" placeholder="Email" name="email" 
+      <input type="text" placeholder="Email" name="email" email
         ngModel required #emailId="ngModel" [(ngModel)]="emailAddress"/>
       <small *ngIf="emailId.invalid && emailId.touched">*Email is required</small>
       <span *ngIf="emailAddress">You have entered : {{emailAddress}}</span>
@@ -29,16 +29,22 @@
         <input type="number" placeholder="Phone Number" name="phoneNumber" ngModel/>
       </div>
       <div class="input-box">
-        <input type="date" placeholder="Date of Birth" name="dateofbirth" ngModel/>
+        <input type="date" placeholder="Date of Birth" name="dateofbirth" ngModel
+          required #tempdob="ngModel" [(ngModel)]="dob"/>
       </div>
     </div>
 
-    <!-- <div class="input-box">
-      <input type="text" placeholder="username" />
-      <button class="btn-gen-username">
+    <div class="input-box">
+      <input type="text" placeholder="username" name="username" 
+        ngModel required #uname="ngModel"/>
+        <small *ngIf="uname.invalid && uname.touched">*Username is required</small>
+        <br>
+      <button class="btn-gen-username" type="button" 
+        [disabled]="fname.invalid || lname.invalid || tempdob.invalid"
+        (click)="generateUsername()">
         Create a Username
       </button>
-    </div> -->
+    </div>
 
     <div class="gender-box">
       <h3>Gender</h3>
