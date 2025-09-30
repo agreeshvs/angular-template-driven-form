@@ -91,6 +91,28 @@
     </div>
     <small *ngIf="!addr.valid&&addr.touched">*Madatory fields are there</small>
     <input type="submit" value="Submit" class="submit-btn">
-    <button type="reset" (click)="resetForm()" class="submit-btn">Reset Form</button>
+    <button type="button" (click)="resetForm()" class="submit-btn">Reset Form</button>
   </form>
+</section>
+<section class="user-detail-container">
+  <div class="user-details-container">
+    <div class="user-avatar">
+      <p>{{firstName.slice(0, 1).toUpperCase()}}{{lastName.slice(0, 1).toUpperCase()}}</p>
+    </div>
+    <div class="user-details">
+      <div class="user-name">
+        <h2>{{ firstName }} {{ lastName }}</h2>
+      </div>
+      <p><b>Email:</b> {{ emailAddress}}</p>
+      <p><b>Username:</b> {{ username }} </p>
+      <p><b>Date of birth:</b> {{ dob }}</p>
+      <div class="user-name">
+        <h3>Address</h3>
+      </div>
+      <span>{{country }}</span>.
+      <span>{{ city }}</span>.
+      <span>{{ region }}</span>.
+      <span> {{ postal }}</span>
+    </div>
+  </div>
 </section>

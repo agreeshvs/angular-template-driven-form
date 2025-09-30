@@ -21,18 +21,36 @@ export class AppComponent {
     {    id: 'check-female',    value: 'female', display: 'Female' },
     {    id: 'check-other',    value: 'other', display: 'Prefer not to say'  },
   ]
+  postal: any;
+  city: any;
+  country: any;
+  region: any;
+  phoneNumber: any;
+  username: any;
+  street1: any;
+  street2: any;
 
-  ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-
-  }
 
   onFormSubmit(){
     this.form.control.markAllAsTouched();
     this.form.valid ? alert('Form Submitted!') : alert('Please fill the form correctly.');
-    console.log(this.form);
-    this.resetForm();
+    console.log(this.form.value);
+    this.firstName = this.form.value.firstName;
+    this.lastName = this.form.value.lastName;
+    this.emailAddress = this.form.value.email;
+    this.dob = this.form.value.dateofbirth;
+    this.postal = this.form.value.address.postalCode;
+    this.city = this.form.value.address.city;
+    this.country = this.form.value.address.country;
+    this.region = this.form.value.address.region;
+    this.phoneNumber = this.form.value.phoneNumber;
+    this.username = this.form.value.username;
+    this.street1 = this.form.value.address.street1;
+    this.street2 = this.form.value.address.street2;
+    console.log(this.country);
+    setTimeout(() => {
+      this.resetForm();
+    }, 2000);
   }
 
   generateUsername(){
