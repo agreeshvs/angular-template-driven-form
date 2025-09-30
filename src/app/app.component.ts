@@ -12,6 +12,8 @@ export class AppComponent {
   firstName: string = '';
   lastName: string = '';
   emailAddress: string = '';
+  defaultGender: string = 'male';
+  defaultCountry: string = 'India';
 
   genders = [
     {    id: 'check-male',    value: 'male', display: 'Male'  },
@@ -20,6 +22,8 @@ export class AppComponent {
   ]
 
   onFormSubmit(){
+    this.form.control.markAllAsTouched();
+    this.form.valid ? alert('Form Submitted!') : alert('Please fill the form correctly.');
     console.log(this.form);
   }
 }

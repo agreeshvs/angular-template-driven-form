@@ -7,7 +7,7 @@
         <input type="text" placeholder="First Name" name="firstName" 
             ngModel required #fname="ngModel" [(ngModel)]="firstName"/>
         <small *ngIf="fname.invalid && fname.touched">*First Name is required</small>
-        <span>You have entered : {{firstName}}</span>
+        <span *ngIf="firstName">You have entered : {{firstName}}</span>
       </div> 
   
       <div class="input-box">
@@ -44,7 +44,7 @@
       <h3>Gender</h3>
       <div class="gender-option">
         <div *ngFor="let gender of genders" class="gender">
-          <input type="radio" [value]="gender.value" [id]="gender.id" name="gender" checked ngModel/>
+          <input type="radio" [value]="gender.value" [id]="gender.id" name="gender" checked ngModel [(ngModel)]="defaultGender"/>
           <label [for]="gender.id">{{gender.display}}</label>
         </div>
         <!-- <div class="gender">
@@ -62,13 +62,13 @@
       </div>
     </div>
 
-    <div class="input-box address">
+    <div class="input-box address" ngModelGroup="address" #addr="ngModelGroup">
       <label>Address</label>
-      <input type="text" placeholder="Street address" name="street1" ngModel/>
+      <input type="text" placeholder="Street address" name="street1" ngModel required/>
       <input type="text" placeholder="Street address line 2" name="street2" ngModel/>
       <div class="column">
         <div class="select-box">
-          <select name="country" ngModel>
+          <select name="country" ngModel required [(ngModel)]="defaultCountry">
             <option hidden>Country</option>
             <option value="America">America</option>
             <option value="Japan">Japan</option>
@@ -76,13 +76,14 @@
             <option value="Nepal">Nepal</option>
           </select>
         </div>
-        <input type="text" placeholder="City" name="city" ngModel/>
+        <input type="text" placeholder="City" name="city" ngModel required/>
       </div>
       <div class="column">
         <input type="text" placeholder="Region" name="region" ngModel/>
-        <input type="number" placeholder="Postal code" name="postalCode" ngModel/>
+        <input type="number" placeholder="Postal code" name="postalCode" ngModel required/>
       </div>
     </div>
+    <small *ngIf="!addr.valid&&addr.touched">*Madatory fields are there</small>
     <input type="submit" value="Submit" class="submit-btn"> 
   </form>
 </section>
