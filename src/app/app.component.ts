@@ -32,6 +32,7 @@ export class AppComponent {
     this.form.control.markAllAsTouched();
     this.form.valid ? alert('Form Submitted!') : alert('Please fill the form correctly.');
     console.log(this.form);
+    this.resetForm();
   }
 
   generateUsername(){
@@ -80,5 +81,17 @@ export class AppComponent {
     this.form.form.patchValue({
       username: username.toLowerCase()
     });
+  }
+
+  resetForm(){
+    this.form.reset();
+    this.form.form.patchValue({
+      gender: 'male',
+      address: {
+        country: 'India'
+      }
+    });
+
+    console.log(this.form);
   }
 }

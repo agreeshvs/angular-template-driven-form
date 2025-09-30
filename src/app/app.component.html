@@ -90,6 +90,7 @@
       </div>
     </div>
     <small *ngIf="!addr.valid&&addr.touched">*Madatory fields are there</small>
-    <input type="submit" value="Submit" class="submit-btn"> 
+    <input type="submit" value="Submit" class="submit-btn">
+    <button type="reset" (click)="resetForm()" class="submit-btn">Reset Form</button>
   </form>
 </section>
