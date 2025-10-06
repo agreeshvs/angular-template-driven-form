@@ -27,6 +27,9 @@ export class ReactiveFormComponent implements OnInit {
       }),
       skills: new FormArray([
         new FormControl('', Validators.required)
+      ]),
+      experience: new FormArray([
+        // Make empty experience form array initially
       ])
       
     });
@@ -48,5 +51,27 @@ export class ReactiveFormComponent implements OnInit {
     (
       (this.reactiveForm.get('skills') as FormArray).removeAt(index)
     );
+  }
+
+  addExperience(){
+    // Create a new FormGroup for experience
+    const formGroup = new FormGroup({
+      company: new FormControl('', Validators.required),
+      position: new FormControl('', Validators.required),
+      experience: new FormControl('', [Validators.required, Validators.min(0)]),
+      startDate: new FormControl('', Validators.required),
+      endDate: new FormControl('', Validators.required)
+    });
+
+    // Push the new FormGroup into the FormArray
+    // ( this.reactiveForm.get('experience') as FormArray ).push(
+    //   formGroup 
+    // );
+
+    (<FormArray>this.reactiveForm.get('experience')).push(formGroup)
+  }
+
+  deleteExperience(index: number){
+    (this.reactiveForm.get('experience') as FormArray).removeAt(index);
   }
 }
