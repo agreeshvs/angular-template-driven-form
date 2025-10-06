@@ -24,7 +24,13 @@ export class ReactiveFormComponent implements OnInit {
         city: new FormControl(''),
         region: new FormControl(''),
         postalCode: new FormControl('',Validators.required)
-      })
+      }),
+      skills: new FormArray([
+        new FormControl('', Validators.required),
+        new FormControl('', Validators.required),
+        new FormControl('', Validators.required),
+        new FormControl('', Validators.required)
+      ])
       
     });
   }
