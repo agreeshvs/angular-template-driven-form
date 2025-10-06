@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CustomValidators } from '../Validators/noSpaceAllowed.validator';
 
 @Component({
   selector: 'app-reactive-form',
@@ -12,8 +13,8 @@ export class ReactiveFormComponent implements OnInit {
   ngOnInit(): void {
     this.reactiveForm = new FormGroup({
       // Define your form controls here
-      firstName: new FormControl('',[Validators.required]),
-      lastName: new FormControl('',[Validators.required]),
+      firstName: new FormControl('',[Validators.required, CustomValidators.noSpaceAllowed]),
+      lastName: new FormControl('',[Validators.required, CustomValidators.noSpaceAllowed]),
       email: new FormControl('',[Validators.required, Validators.email]),
       username: new FormControl(''),
       dob: new FormControl(''),
@@ -36,6 +37,7 @@ export class ReactiveFormComponent implements OnInit {
   }
 
   onSubmit(){
+    this.reactiveForm.markAllAsTouched();
     console.log(this.reactiveForm);
   }
 
