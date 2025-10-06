@@ -26,9 +26,6 @@ export class ReactiveFormComponent implements OnInit {
         postalCode: new FormControl('',Validators.required)
       }),
       skills: new FormArray([
-        new FormControl('', Validators.required),
-        new FormControl('', Validators.required),
-        new FormControl('', Validators.required),
         new FormControl('', Validators.required)
       ])
       
@@ -37,5 +34,19 @@ export class ReactiveFormComponent implements OnInit {
 
   onSubmit(){
     console.log(this.reactiveForm);
+  }
+
+  addSkillControl(){
+    (
+      (this.reactiveForm.get('skills') as FormArray).push(
+        new FormControl('', Validators.required)
+      )
+    );
+  }
+
+  removeSkillControl(index: number){
+    (
+      (this.reactiveForm.get('skills') as FormArray).removeAt(index)
+    );
   }
 }
