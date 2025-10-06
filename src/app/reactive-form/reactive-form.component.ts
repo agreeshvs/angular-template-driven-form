@@ -15,15 +15,17 @@ export class ReactiveFormComponent implements OnInit {
       firstName: new FormControl('',[Validators.required]),
       lastName: new FormControl('',[Validators.required]),
       email: new FormControl('',[Validators.required, Validators.email]),
-      username: new FormControl('',[Validators.required]),
+      username: new FormControl(''),
       dob: new FormControl(''),
       gender: new FormControl('male'),
-      street: new FormControl(''),
-      country: new FormControl('India'),
-      city: new FormControl(''),
-      region: new FormControl(''),
-      postalCode: new FormControl('',Validators.required),
-      phone: new FormControl('')
+      address: new FormGroup({
+        street: new FormControl('',Validators.required),
+        country: new FormControl('India',Validators.required),
+        city: new FormControl(''),
+        region: new FormControl(''),
+        postalCode: new FormControl('',Validators.required)
+      })
+      
     });
   }
 
