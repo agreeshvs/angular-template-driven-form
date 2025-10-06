@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { CustomValidators } from '../Validators/noSpaceAllowed.validator';
 
 @Component({
   selector: 'app-reactive-form',
@@ -12,22 +13,67 @@ export class ReactiveFormComponent implements OnInit {
   ngOnInit(): void {
     this.reactiveForm = new FormGroup({
       // Define your form controls here
-      firstName: new FormControl('',[Validators.required]),
-      lastName: new FormControl('',[Validators.required]),
+      firstName: new FormControl('',[Validators.required, CustomValidators.noSpaceAllowed]),
+      lastName: new FormControl('',[Validators.required, CustomValidators.noSpaceAllowed]),
       email: new FormControl('',[Validators.required, Validators.email]),
-      username: new FormControl('',[Validators.required]),
+      username: new FormControl(''),
       dob: new FormControl(''),
       gender: new FormControl('male'),
-      street: new FormControl(''),
-      country: new FormControl('India'),
-      city: new FormControl(''),
-      region: new FormControl(''),
-      postalCode: new FormControl('',Validators.required),
-      phone: new FormControl('')
+      address: new FormGroup({
+        street: new FormControl('',Validators.required),
+        country: new FormControl('India',Validators.required),
+        city: new FormControl(''),
+        region: new FormControl(''),
+        postalCode: new FormControl('',Validators.required)
+      }),
+      skills: new FormArray([
+        new FormControl('', Validators.required)
+      ]),
+      experience: new FormArray([
+        // Make empty experience form array initially
+      ])
+      
     });
   }
 
   onSubmit(){
+    this.reactiveForm.markAllAsTouched();
     console.log(this.reactiveForm);
+  }
+
+  addSkillControl(){
+    (
+      (this.reactiveForm.get('skills') as FormArray).push(
+        new FormControl('', Validators.required)
+      )
+    );
+  }
+
+  removeSkillControl(index: number){
+    (
+      (this.reactiveForm.get('skills') as FormArray).removeAt(index)
+    );
+  }
+
+  addExperience(){
+    // Create a new FormGroup for experience
+    const formGroup = new FormGroup({
+      company: new FormControl('', Validators.required),
+      position: new FormControl('', Validators.required),
+      experience: new FormControl('', [Validators.required, Validators.min(0)]),
+      startDate: new FormControl('', Validators.required),
+      endDate: new FormControl('', Validators.required)
+    });
+
+    // Push the new FormGroup into the FormArray
+    // ( this.reactiveForm.get('experience') as FormArray ).push(
+    //   formGroup 
+    // );
+
+    (<FormArray>this.reactiveForm.get('experience')).push(formGroup)
+  }
+
+  deleteExperience(index: number){
+    (this.reactiveForm.get('experience') as FormArray).removeAt(index);
   }
 }
