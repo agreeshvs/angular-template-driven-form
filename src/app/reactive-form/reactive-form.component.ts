@@ -16,7 +16,7 @@ export class ReactiveFormComponent implements OnInit {
       firstName: new FormControl('',[Validators.required, CustomValidators.noSpaceAllowed]),
       lastName: new FormControl('',[Validators.required, CustomValidators.noSpaceAllowed]),
       email: new FormControl('',[Validators.required, Validators.email]),
-      username: new FormControl(''),
+      username: new FormControl('',[Validators.required],CustomValidators.checkusername),
       dob: new FormControl(''),
       gender: new FormControl('male'),
       address: new FormGroup({
