@@ -1,4 +1,4 @@
-<section class="container">
+<section class="container" [ngClass]="formStatus" >
   <header>Registration Form</header>
 
   <form class="form" [formGroup]="reactiveForm" (ngSubmit)="onSubmit()">
@@ -33,7 +33,7 @@
     <div class="column">
       <div class="input-box">
         <input type="text" placeholder="username" formControlName="username"/>
-        <button class="btn-gen-username" type="button">
+        <button class="btn-gen-username" type="button" (click)="createUsername()" [disabled]="!reactiveForm.get('firstName').value || !reactiveForm.get('lastName').value || !reactiveForm.get('dob').value" >
           Create a Username
         </button>
       </div>
@@ -141,25 +141,25 @@
 
 <!--uncomment below HTML for displaying form data-->
 
-<!-- <section class="user-detail-container">
+<section class="user-detail-container" *ngIf="formSubmitted">
   <div class="user-details-container">
     <div class="user-avatar">
-      <p>JS</p>
+      <p>{{userdata?.firstName.slice(0,1) | uppercase}}{{userdata?.lastName.slice(0,1) | uppercase}}</p>
     </div>
     <div class="user-details">
       <div class="user-name">
-        <h2>John Smith</h2>
+        <h2>{{userdata.firstName}}&nbsp;{{userdata.lastName}}</h2>
       </div>
-      <p><b>Email:</b> johnsmith@gmail.com</p>
-      <p><b>Username:</b> johnsmith86 </p>
-      <p><b>Date of birth:</b> July 21, 1989</p>
+      <p><b>Email:</b>{{userdata.email}}</p>
+      <p><b>Username:</b> {{userdata.username}} </p>
+      <p><b>Date of birth:</b> {{userdata.dob}}</p>
       <div class="user-name">
         <h3>Address</h3>
       </div>
-      <span>India</span>.
-      <span> New Delhi</span>.
-      <span> NCR</span>.
-      <span> 234565</span>
+      <span>{{userdata.address.street}}</span>.
+      <span>{{userdata.address.city}}</span>.
+      <span> {{userdata.address.region}}</span>.
+      <span>{{userdata.address.postalCode}}</span>
     </div>
   </div>
-</section> -->
+</section>

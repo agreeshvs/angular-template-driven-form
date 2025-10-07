@@ -9,6 +9,9 @@ import { CustomValidators } from '../Validators/noSpaceAllowed.validator';
 })
 export class ReactiveFormComponent implements OnInit {
   reactiveForm: FormGroup;
+  formStatus: string = '';
+  userdata: any = {};
+  formSubmitted: boolean;
 
   ngOnInit(): void {
     this.reactiveForm = new FormGroup({
@@ -16,7 +19,7 @@ export class ReactiveFormComponent implements OnInit {
       firstName: new FormControl('',[Validators.required, CustomValidators.noSpaceAllowed]),
       lastName: new FormControl('',[Validators.required, CustomValidators.noSpaceAllowed]),
       email: new FormControl('',[Validators.required, Validators.email]),
-      username: new FormControl(''),
+      username: new FormControl('',[Validators.required],CustomValidators.checkusername),
       dob: new FormControl(''),
       gender: new FormControl('male'),
       address: new FormGroup({
@@ -34,11 +37,42 @@ export class ReactiveFormComponent implements OnInit {
       ])
       
     });
+
+    // Value change event on form control
+    this.reactiveForm.get('firstName').valueChanges.subscribe( (value) => {
+      console.log('firstName valuechange ',value);
+    });
+
+
+    // Value change event on formgroup
+    this.reactiveForm.valueChanges.subscribe( (data) =>{
+      // console.log(data);
+    })
+
+    // State change event on form control
+    this.reactiveForm.get('email').statusChanges.subscribe( (status) => {
+      console.log('email status change ',status);
+    });
+
+    this.reactiveForm.get('username').statusChanges.subscribe( (status) => {
+      console.log('username status change ',status);
+    });
+
+    // Status change event on formgroup
+    this.reactiveForm.statusChanges.subscribe( (status) => {
+      console.log('form status change ',status);
+      this.formStatus = status;
+    });
+
+    
   }
 
   onSubmit(){
+    this.formSubmitted = true;
     this.reactiveForm.markAllAsTouched();
     console.log(this.reactiveForm);
+    this.userdata = this.reactiveForm.value;
+    this.reactiveForm.reset(); // Form reset
   }
 
   addSkillControl(){
@@ -75,5 +109,32 @@ export class ReactiveFormComponent implements OnInit {
 
   deleteExperience(index: number){
     (this.reactiveForm.get('experience') as FormArray).removeAt(index);
+  }
+
+  createUsername(){
+    let username = '';
+    const firstname = this.reactiveForm.get('firstName').value;
+    const lastname = this.reactiveForm.get('lastName').value;
+    const dob = this.reactiveForm.get('dob').value;
+
+    if( firstname.length >= 3){
+      username += firstname.slice(0,3);
+    }
+    else{
+      username += firstname;
+    }
+    if( lastname.length >= 3){
+      username += lastname.slice(0,3);
+    }
+    else{
+      username += lastname;
+    }
+    
+    if(dob){
+      const year = new Date(dob).getFullYear().toString();
+      username += year;
+    }
+
+    this.reactiveForm.get('username').setValue(username.toLowerCase());
   }
 }
