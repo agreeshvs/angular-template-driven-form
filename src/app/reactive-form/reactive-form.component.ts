@@ -10,6 +10,8 @@ import { CustomValidators } from '../Validators/noSpaceAllowed.validator';
 export class ReactiveFormComponent implements OnInit {
   reactiveForm: FormGroup;
   formStatus: string = '';
+  userdata: any = {};
+  formSubmitted: boolean;
 
   ngOnInit(): void {
     this.reactiveForm = new FormGroup({
@@ -66,8 +68,11 @@ export class ReactiveFormComponent implements OnInit {
   }
 
   onSubmit(){
+    this.formSubmitted = true;
     this.reactiveForm.markAllAsTouched();
     console.log(this.reactiveForm);
+    this.userdata = this.reactiveForm.value;
+    this.reactiveForm.reset(); // Form reset
   }
 
   addSkillControl(){
