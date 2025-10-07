@@ -105,4 +105,31 @@ export class ReactiveFormComponent implements OnInit {
   deleteExperience(index: number){
     (this.reactiveForm.get('experience') as FormArray).removeAt(index);
   }
+
+  createUsername(){
+    let username = '';
+    const firstname = this.reactiveForm.get('firstName').value;
+    const lastname = this.reactiveForm.get('lastName').value;
+    const dob = this.reactiveForm.get('dob').value;
+
+    if( firstname.length >= 3){
+      username += firstname.slice(0,3);
+    }
+    else{
+      username += firstname;
+    }
+    if( lastname.length >= 3){
+      username += lastname.slice(0,3);
+    }
+    else{
+      username += lastname;
+    }
+    
+    if(dob){
+      const year = new Date(dob).getFullYear().toString();
+      username += year;
+    }
+
+    this.reactiveForm.get('username').setValue(username.toLowerCase());
+  }
 }

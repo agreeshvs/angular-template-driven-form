@@ -33,7 +33,7 @@
     <div class="column">
       <div class="input-box">
         <input type="text" placeholder="username" formControlName="username"/>
-        <button class="btn-gen-username" type="button">
+        <button class="btn-gen-username" type="button" (click)="createUsername()" [disabled]="!reactiveForm.get('firstName').value || !reactiveForm.get('lastName').value || !reactiveForm.get('dob').value" >
           Create a Username
         </button>
       </div>
