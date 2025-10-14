@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Task } from '../Model/task';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,6 +8,7 @@ import { Component } from '@angular/core';
 })
 export class DashboardComponent {
   showCreateTaskForm: boolean = false;
+  taskList: Task[] = [];
 
   OpenCreateTaskForm(){
     this.showCreateTaskForm = true;
@@ -14,5 +16,10 @@ export class DashboardComponent {
 
   CloseCreateTaskForm(){
     this.showCreateTaskForm = false;
+  }
+
+  createTask(data: Task){
+    console.log('Task Created Successfully',data);
+    this.taskList.push(data);
   }
 }
