@@ -1,0 +1,55 @@
+<app-create-task 
+        *ngIf="showCreateTaskForm" 
+        (CloseForm)="CloseCreateTaskForm()"
+        (emitTaskData)="createTask($event)"
+></app-create-task>
+
+<div class="dashboard-container">
+    <div style="display: flex;">
+        <div style="width: 50%">
+            <h2>Dashboard</h2>
+        </div>
+        <div style="width: 50%; text-align: right;">
+            <button class="create-task-btn" (click)="OpenCreateTaskForm()">Create Task</button>
+            <button class="create-task-btn" (click)="fetchAllTasks()" >Fetch Tasks</button>
+            <button class="create-task-btn" >Clear Tasks</button>
+        </div>
+    </div>
+
+    <hr>
+
+    <div *ngIf="loadingTask" style="text-align: center; margin-top: 50px;">
+        <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
+        <p>Loading Tasks...</p>
+    </div>
+    <ng-template [ngIf]="!loadingTask">
+         <div class="dashboard-item-container" *ngIf="taskList && taskList.length > 0; else noTaskTemplate">
+            <div class="task-item" *ngFor="let task of taskList" [ngClass]="'task-'+task.status">
+                <div class="task-title">
+                    <h3>{{task.title}}</h3>
+                </div>
+                <p><b>Assigned to: </b>{{task.assignedTo}}</p>
+                <p><b>Priority: </b>{{task.priority}}</p>
+                <p><b>Status: </b>{{task.status}}</p>
+                <div class="task-action-icons">
+                    <button class="task-action-btn" title="Detail">
+                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    </button>
+                    <button class="task-action-btn" title="Edit">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </button>
+                    <button class="task-action-btn" title="Delete">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </button>            
+                </div>
+            </div>
+    </div>
+    <ng-template #noTaskTemplate>
+        <p>No Tasks Found. Please create a new task.</p>
+    </ng-template>
+    </ng-template>
+   
+</div>
+
+
+
