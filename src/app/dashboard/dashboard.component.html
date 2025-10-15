@@ -11,8 +11,8 @@
         </div>
         <div style="width: 50%; text-align: right;">
             <button class="create-task-btn" (click)="OpenCreateTaskForm()">Create Task</button>
-            <button class="create-task-btn">Fetch Tasks</button>
-            <button class="create-task-btn">Clear Tasks</button>
+            <button class="create-task-btn" (click)="fetchAllTasks()" >Fetch Tasks</button>
+            <button class="create-task-btn" >Clear Tasks</button>
         </div>
     </div>
 

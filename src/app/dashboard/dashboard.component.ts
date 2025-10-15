@@ -16,7 +16,7 @@ export class DashboardComponent {
   loadingTask: boolean;
 
   ngOnInit(){
-    this.getTask();
+    this.fetchAllTasks();
   }
 
   OpenCreateTaskForm(){
@@ -32,11 +32,11 @@ export class DashboardComponent {
     this.taskList.push(data);
     this.http.post('https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task.json',data).subscribe( data => {
       console.log('Data posted to server successfully',data);
-      this.getTask()
+      this.fetchAllTasks()
     })
   }
 
-  getTask(){
+  fetchAllTasks(){
     this.loadingTask = true;
     this.http.get<{[key: string]: Task}>(
       'https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task.json'
