@@ -41,4 +41,10 @@ export class TaskService {
       return tasks;
     }))
   }
+
+  updateTask(taskid: string, task: Task){
+    this.http.put('https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task/' + taskid + '.json', task).subscribe(data => {
+      console.log('Data updated to server successfully', data);
+    })
+  }
 } 

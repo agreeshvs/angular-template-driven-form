@@ -39,8 +39,11 @@ export class DashboardComponent {
     this.showCreateTaskForm = false;
   }
 
-  createTask(data: Task){    
-    this.taskService.createTask(data);
+  createOrUpdateTask(data: Task){
+    if( !this.isEditMode)
+      this.taskService.createTask(data);
+    else
+      this.taskService.updateTask(this.selectedTask.id, data);
     setTimeout(() => {
       this.fetchAllTasks(); 
       this.CloseCreateTaskForm();
