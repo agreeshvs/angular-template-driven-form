@@ -58,4 +58,20 @@ export class DashboardComponent {
       });
     })
   }
+
+  deleteTask(taskid){
+    console.log("Task deleted", taskid);
+    this.http.delete('https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task/'+taskid+'.json').subscribe( response => {
+      console.log("Task deleted successfully", response);
+      this.fetchAllTasks();
+    })
+  }
+
+  // Delete all tasks
+  clearAllTask(){
+    this.http.delete('https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task.json/').subscribe( response => {
+      console.log("Task deleted successfully", response);
+      this.fetchAllTasks();
+    })
+  }
 }

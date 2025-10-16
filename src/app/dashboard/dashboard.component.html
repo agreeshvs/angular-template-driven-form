@@ -11,8 +11,8 @@
         </div>
         <div style="width: 50%; text-align: right;">
             <button class="create-task-btn" (click)="OpenCreateTaskForm()">Create Task</button>
-            <button class="create-task-btn" (click)="fetchAllTasks()" >Fetch Tasks</button>
-            <button class="create-task-btn" >Clear Tasks</button>
+            <!-- <button class="create-task-btn" (click)=" fetchAllTasks()" >Fetch Tasks</button> -->
+            <button class="create-task-btn" (click)="clearAllTask()"  >Clear Tasks</button>
         </div>
     </div>
 
@@ -38,14 +38,14 @@
                     <button class="task-action-btn" title="Edit">
                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                     </button>
-                    <button class="task-action-btn" title="Delete">
+                    <button class="task-action-btn" title="Delete" (click)="deleteTask(task.id)">
                         <i class="fa fa-trash" aria-hidden="true"></i>
                     </button>            
                 </div>
             </div>
     </div>
     <ng-template #noTaskTemplate>
-        <p>No Tasks Found. Please create a new task.</p>
+        <p class="no-task">No task has been created Yet</p>
     </ng-template>
     </ng-template>
    
