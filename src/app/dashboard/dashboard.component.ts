@@ -15,7 +15,9 @@ export class DashboardComponent {
 
   http: HttpClient = inject(HttpClient);
   loadingTask: boolean;
-  taskService: TaskService = inject(TaskService)
+  taskService: TaskService = inject(TaskService);
+  isEditMode: boolean = false
+  selectedTask: Task;
 
   ngOnInit(){
     this.fetchAllTasks();
@@ -23,13 +25,21 @@ export class DashboardComponent {
 
   OpenCreateTaskForm(){
     this.showCreateTaskForm = true;
+    this.isEditMode = false;
+    this.selectedTask = {title: '',
+      description: '',
+      createdAt: '',
+      priority:'',
+      status: '',
+      assignedTo: ''
+     }
   }
 
   CloseCreateTaskForm(){
     this.showCreateTaskForm = false;
   }
 
-  createTask(data: Task){
+  createTask(data: Task){    
     this.taskService.createTask(data);
     setTimeout(() => {
       this.fetchAllTasks(); 
@@ -63,5 +73,13 @@ export class DashboardComponent {
     setTimeout(() => {
      this.fetchAllTasks(); 
     },1000);
+  }
+
+  onEditTask(id: string | undefined){
+    // Open the form with existing data
+    this.isEditMode = true;
+    this.showCreateTaskForm = true;
+    this.selectedTask = this.taskList.find(item => item.id === id);
+    console.log("selectedTask", this.selectedTask);
   }
 }
