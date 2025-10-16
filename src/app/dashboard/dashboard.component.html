@@ -24,7 +24,8 @@
         <i class="fa fa-spinner fa-spin" style="font-size:24px"></i>
         <p>Loading Tasks...</p>
     </div>
-    <ng-template [ngIf]="!loadingTask">
+    <div class="sb sb-error" *ngIf="errorMessage">{{errorMessage}}</div>
+    <ng-container *ngIf="!loadingTask">
          <div class="dashboard-item-container" *ngIf="taskList && taskList.length > 0; else noTaskTemplate">
             <div class="task-item" *ngFor="let task of taskList" [ngClass]="'task-'+task.status">
                 <div class="task-title">
@@ -45,12 +46,13 @@
                     </button>            
                 </div>
             </div>
-    </div>
-    <ng-template #noTaskTemplate>
-        <p class="no-task">No task has been created Yet</p>
-    </ng-template>
-    </ng-template>
+            </div>
+        <ng-template #noTaskTemplate>
+            <p class="no-task">No task has been created Yet</p>
+        </ng-template>
+    </ng-container>
    
+
 </div>
 
 

@@ -18,6 +18,7 @@ export class DashboardComponent {
   taskService: TaskService = inject(TaskService);
   isEditMode: boolean = false
   selectedTask: Task;
+  errorMessage: string;
 
   ngOnInit(){
     this.fetchAllTasks();
@@ -53,12 +54,23 @@ export class DashboardComponent {
 
   fetchAllTasks(){
     this.loadingTask = true;
-    this.taskService.getAllTasks().subscribe( data =>{
-      this.taskList = data;
-       setTimeout(() => {
+    this.taskService.getAllTasks().subscribe({next:data => {
+        this.taskList = data;
+        setTimeout(() => {
+          this.loadingTask = false;
+        });
+      },error:(err) => {
+        // handle error here
+        this.taskList = [];
         this.loadingTask = false;
-      });
-    })
+        console.error('Error fetching tasks:', err);
+        this.errorMessage = err.error.error;
+
+        setTimeout(() => {
+          this.errorMessage= null;
+        }, 3000);
+      }}      
+    );
    
   }
 
