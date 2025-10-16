@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Task } from '../Model/task';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { map, Subscription } from 'rxjs';
 import { TaskService } from '../Services/task.service';
 
 @Component({
@@ -19,9 +19,18 @@ export class DashboardComponent {
   isEditMode: boolean = false
   selectedTask: Task;
   errorMessage: string;
+  errorSub: Subscription;
 
   ngOnInit(){
     this.fetchAllTasks();
+    this.errorSub = this.taskService.errorSubject.subscribe({next: (errMsg) => {
+      this.setErrorMessage(errMsg);
+    }})
+  }
+  ngOnDestroy(){
+    if(this.errorSub){
+      this.errorSub.unsubscribe();
+    }
   }
 
   OpenCreateTaskForm(){
@@ -64,11 +73,7 @@ export class DashboardComponent {
         this.taskList = [];
         this.loadingTask = false;
         console.error('Error fetching tasks:', err);
-        this.errorMessage = err.error.error;
-
-        setTimeout(() => {
-          this.errorMessage= null;
-        }, 3000);
+        this.setErrorMessage(err);
       }}      
     );
    
@@ -96,5 +101,13 @@ export class DashboardComponent {
     this.showCreateTaskForm = true;
     this.selectedTask = this.taskList.find(item => item.id === id);
     console.log("selectedTask", this.selectedTask);
+  }
+
+  setErrorMessage(err: HttpErrorResponse){
+    this.errorMessage = err.error.error;
+
+    setTimeout(() => {
+      this.errorMessage= null;
+    }, 3000);
   }
 }

@@ -1,30 +1,37 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Task } from "../Model/task";
-import { map } from "rxjs";
+import { map, Subject } from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskService {
-  http: HttpClient = inject(HttpClient)
+  http: HttpClient = inject(HttpClient);
+  errorSubject = new Subject<HttpErrorResponse>();
 
   createTask(task: Task) {
-    this.http.post('https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task.json', task).subscribe(data => {
-      console.log('Data posted to server successfully', data);
-    })
+    this.http.post('https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task.json', task)
+    .subscribe({error: (err)=>{
+      console.error('Error creating task:', err);
+      this.errorSubject.next(err);
+    }})
   }
 
   deleteTask(taskid) {
-    this.http.delete('https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task/' + taskid + '.json').subscribe(response => {
-      console.log("Task deleted successfully", response);
-    })
+    this.http.delete('https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task/' + taskid + '.json')
+    .subscribe({error: (err)=>{
+      console.error('Error creating task:', err);
+      this.errorSubject.next(err);
+    }})
   }
 
   deleteAllTask() {
-    this.http.delete('https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task.json/').subscribe(response => {
-      console.log("Task deleted successfully", response);
-    })
+    this.http.delete('https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task.json/')
+    .subscribe({error: (err)=>{
+      console.error('Error creating task:', err);
+      this.errorSubject.next(err);
+    }})
   }
 
   getAllTasks() {
@@ -43,8 +50,10 @@ export class TaskService {
   }
 
   updateTask(taskid: string, task: Task){
-    this.http.put('https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task/' + taskid + '.json', task).subscribe(data => {
-      console.log('Data updated to server successfully', data);
-    })
+    this.http.put('https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task/' + taskid + '.json', task)
+    .subscribe({error: (err)=>{
+      console.error('Error creating task:', err);
+      this.errorSubject.next(err);
+    }})
   }
 } 
