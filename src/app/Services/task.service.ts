@@ -87,4 +87,16 @@ export class TaskService {
       this.errorSubject.next(err);
     }})
   }
+
+  fetchTask(taskid: string){
+    return this.http.get<{ [key: string]: Task }>(
+      'https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task/' + taskid + '.json'
+    ).pipe(map((response) => {
+      // Transform data
+      console.log(response)
+      let task = {}
+      task = {...response, id: taskid};
+      return task
+    }))
+  }
 } 

@@ -20,6 +20,8 @@ export class DashboardComponent {
   selectedTask: Task;
   errorMessage: string;
   errorSub: Subscription;
+  showTaskDetails: boolean = false;
+  taskDetails: any;
 
   ngOnInit(){
     this.fetchAllTasks();
@@ -105,9 +107,27 @@ export class DashboardComponent {
 
   setErrorMessage(err: HttpErrorResponse){
     this.errorMessage = err.error.error;
-    
+
     setTimeout(() => {
       this.errorMessage= null;
     }, 3000);
+  }
+
+
+
+  closeTaskDetails(){
+    this.showTaskDetails = false;
+  }
+
+  showCurrentTaskDetails(id: string | undefined){
+    
+    this.taskService.fetchTask(id).subscribe( {next: data => {
+      this.taskDetails = data;
+      console.log("Task Details:", this.taskDetails);
+      setTimeout( () => {
+        this.showTaskDetails = true;
+      },0)
+    }});
+    
   }
 }
