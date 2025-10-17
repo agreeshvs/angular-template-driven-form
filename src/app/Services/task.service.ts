@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Task } from "../Model/task";
 import { catchError, map, Subject, throwError } from "rxjs";
@@ -13,7 +13,8 @@ export class TaskService {
   loggingService: LoggingService = inject(LoggingService);
 
   createTask(task: Task) {
-    this.http.post('https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task.json', task)
+    const headers = new HttpHeaders({'my-header': 'hello-world'});
+    this.http.post('https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task.json', task,{headers: headers})
     .pipe( catchError( (err: HttpErrorResponse) => {
       // this.errorSubject.next(err);
       const errorObj = {statusCode: err.status, errorMessage: err.message, datetime: new Date()}
@@ -55,8 +56,12 @@ export class TaskService {
   }
 
   getAllTasks() {
+    let headers = new HttpHeaders();
+    headers = headers.set('content-type','application/json');
+    headers = headers.append('my-header','my-header-value');
     return this.http.get<{ [key: string]: Task }>(
-      'https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task.json'
+      'https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task.json',
+      {headers:headers}
     ).pipe(map((response) => {
       // Transform data
       let tasks = [];
