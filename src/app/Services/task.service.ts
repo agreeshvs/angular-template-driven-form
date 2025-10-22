@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Task } from "../Model/task";
 import { catchError, map, Subject, throwError } from "rxjs";
@@ -59,9 +59,12 @@ export class TaskService {
     let headers = new HttpHeaders();
     headers = headers.set('content-type','application/json');
     headers = headers.append('my-header','my-header-value');
+    let qryParams = new HttpParams(); // immutable, instance can't change
+    qryParams = qryParams.set('page','1');
+    qryParams = qryParams.set('limit','10');
     return this.http.get<{ [key: string]: Task }>(
       'https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task.json',
-      {headers:headers}
+      {headers:headers,params: qryParams}
     ).pipe(map((response) => {
       // Transform data
       let tasks = [];
