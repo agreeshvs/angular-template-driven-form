@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Task } from '../Model/task';
-import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { map, Subscription } from 'rxjs';
 import { TaskService } from '../Services/task.service';
 
 @Component({
@@ -18,9 +18,21 @@ export class DashboardComponent {
   taskService: TaskService = inject(TaskService);
   isEditMode: boolean = false
   selectedTask: Task;
+  errorMessage: string;
+  errorSub: Subscription;
+  showTaskDetails: boolean = false;
+  taskDetails: any;
 
   ngOnInit(){
     this.fetchAllTasks();
+    this.errorSub = this.taskService.errorSubject.subscribe({next: (errMsg) => {
+      this.setErrorMessage(errMsg);
+    }})
+  }
+  ngOnDestroy(){
+    if(this.errorSub){
+      this.errorSub.unsubscribe();
+    }
   }
 
   OpenCreateTaskForm(){
@@ -53,12 +65,19 @@ export class DashboardComponent {
 
   fetchAllTasks(){
     this.loadingTask = true;
-    this.taskService.getAllTasks().subscribe( data =>{
-      this.taskList = data;
-       setTimeout(() => {
+    this.taskService.getAllTasks().subscribe({next:data => {
+        this.taskList = data;
+        setTimeout(() => {
+          this.loadingTask = false;
+        });
+      },error:(err) => {
+        // handle error here
+        this.taskList = [];
         this.loadingTask = false;
-      });
-    })
+        console.error('Error fetching tasks:', err);
+        this.setErrorMessage(err);
+      }}      
+    );
    
   }
 
@@ -84,5 +103,31 @@ export class DashboardComponent {
     this.showCreateTaskForm = true;
     this.selectedTask = this.taskList.find(item => item.id === id);
     console.log("selectedTask", this.selectedTask);
+  }
+
+  setErrorMessage(err: HttpErrorResponse){
+    this.errorMessage = err.error.error;
+
+    setTimeout(() => {
+      this.errorMessage= null;
+    }, 3000);
+  }
+
+
+
+  closeTaskDetails(){
+    this.showTaskDetails = false;
+  }
+
+  showCurrentTaskDetails(id: string | undefined){
+    
+    this.taskService.fetchTask(id).subscribe( {next: data => {
+      this.taskDetails = data;
+      console.log("Task Details:", this.taskDetails);
+      setTimeout( () => {
+        this.showTaskDetails = true;
+      },0)
+    }});
+    
   }
 }
