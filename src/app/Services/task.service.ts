@@ -1,7 +1,7 @@
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from "@angular/common/http";
+import { HttpClient, HttpErrorResponse, HttpEventType, HttpHeaders, HttpParams } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Task } from "../Model/task";
-import { catchError, map, Subject, throwError } from "rxjs";
+import { catchError, map, Subject, tap, throwError } from "rxjs";
 import { LoggingService } from "./logging.service";
 
 @Injectable({
@@ -28,8 +28,13 @@ export class TaskService {
   }
 
   deleteTask(taskid) {
-    this.http.delete('https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task/' + taskid + '.json')
-    .pipe( catchError( (err: HttpErrorResponse) => {
+    this.http.delete('https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task/' + taskid + '.json',{observe: 'events'})
+    .pipe( tap( (event)=> {
+      console.log(event);
+      if( event.type === HttpEventType.Response) {
+        console.log('Delete response received', event.body);
+      }
+    }),catchError( (err: HttpErrorResponse) => {
       // this.errorSubject.next(err);
       const errorObj = {statusCode: err.status, errorMessage: err.message, datetime: new Date()}
       this.loggingService.logError(errorObj);
@@ -64,8 +69,9 @@ export class TaskService {
     qryParams = qryParams.set('limit','10');
     return this.http.get<{ [key: string]: Task }>(
       'https://angularhttpclient-3b419-default-rtdb.firebaseio.com/task.json',
-      {headers:headers,params: qryParams}
+      {headers:headers,params: qryParams, observe: 'body', responseType: 'json' }
     ).pipe(map((response) => {
+      console.log(response);
       // Transform data
       let tasks = [];
       for (let key in response) {
